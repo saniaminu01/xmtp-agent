@@ -1,7 +1,11 @@
 import { Agent, CommandRouter, getTestUrl } from "@xmtp/agent-sdk";
+import { existsSync } from "node:fs";
 
-// Load variables from .env into process.env (Node 20.6+)
-process.loadEnvFile?.(".env");
+// Load variables from .env into process.env when running locally.
+// Hosts like Railway inject env vars directly, so there's no .env file there.
+if (existsSync(".env")) {
+  process.loadEnvFile?.(".env");
+}
 
 // 1. Set up commands the agent understands.
 // CommandRouter parses "/command args" style messages and routes them
