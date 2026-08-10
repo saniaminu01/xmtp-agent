@@ -38,8 +38,16 @@ router
   });
 
 async function main() {
-  // 2. Create the agent from environment variables (WALLET_KEY, ENCRYPTION_KEY, XMTP_ENV)
-  const agent = await Agent.createFromEnv();
+  // 2. Create the agent from environment variables (WALLET_KEY, ENCRYPTION_KEY, XMTP_ENV).
+  // dbPath points at a Railway persistent volume when available (RAILWAY_VOLUME_MOUNT_PATH),
+  // so the agent's identity/db survives restarts and redeploys. Falls back to the
+  // current directory for local development.
+  const customDbPath = (inboxId: string) =>
+    `${process.env.RAILWAY_VOLUME_MOUNT_PATH ?? "."}/${process.env.XMTP_ENV}-${inboxId.slice(0, 8)}.db3`;
+
+  const agent = await Agent.createFromEnv({
+    dbPath: customDbPath,
+  });
 
   // 3. Wire the command router in as middleware so every incoming
   // text message gets checked against our commands. Anything that
