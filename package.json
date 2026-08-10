@@ -1,0 +1,23 @@
+{
+  "name": "xmtp-agent",
+  "version": "1.0.0",
+  "description": "A simple XMTP chat agent built with the Agent SDK",
+  "main": "src/agent.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/agent.ts",
+    "start": "tsx src/agent.ts",
+    "gen:keys": "tsx scripts/gen-keys.ts"
+  },
+  "keywords": ["xmtp", "agent", "chatbot", "web3", "messaging"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@xmtp/agent-sdk": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.2.0",
+    "tsx": "^4.23.11",
+    "typescript": "^7.0.2"
+  }
+}
