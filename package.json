@@ -1,7 +1,7 @@
 {
-  "name": "xmtp-agent",
+  "name": "zenith",
   "version": "1.0.0",
-  "description": "A simple XMTP chat agent built with the Agent SDK",
+  "description": "Zenith — a simple XMTP chat agent built with the Agent SDK",
   "main": "src/agent.ts",
   "type": "module",
   "scripts": {

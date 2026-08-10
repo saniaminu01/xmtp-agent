@@ -15,7 +15,7 @@ const router = new CommandRouter({ helpCommand: "/help" });
 
 router
   .command("/gm", "Say gm back", async (ctx) => {
-    await ctx.sendTextReply("gm ☀️ — welcome to the XMTP network.");
+    await ctx.sendTextReply("gm ☀️ — I'm Zenith, welcome to the XMTP network.");
   })
   .command("/echo", "Echo back whatever you type after it", async (ctx) => {
     const text = ctx.isText() ? ctx.message.content : "";
@@ -33,7 +33,7 @@ router
   })
   .default(async (ctx) => {
     await ctx.sendTextReply(
-      "👋 I didn't recognize that. Try /help to see what I can do.",
+      "👋 I'm Zenith. I didn't recognize that — try /help to see what I can do.",
     );
   });
 
@@ -55,7 +55,7 @@ async function main() {
   agent.use(router.middleware());
 
   agent.on("start", () => {
-    console.log(`✅ Agent is running`);
+    console.log(`✅ Zenith is running`);
     console.log(`📬 Address: ${agent.address}`);
     console.log(`🔗 Test it: ${getTestUrl(agent.client)}`);
   });
