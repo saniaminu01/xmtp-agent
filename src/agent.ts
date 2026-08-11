@@ -1,11 +1,14 @@
 import { Agent, CommandRouter, getTestUrl } from "@xmtp/agent-sdk";
 import { existsSync } from "node:fs";
+import Anthropic from "@anthropic-ai/sdk";
 
 // Load variables from .env into process.env when running locally.
 // Hosts like Railway inject env vars directly, so there's no .env file there.
 if (existsSync(".env")) {
   process.loadEnvFile?.(".env");
 }
+
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 // 1. Set up commands the agent understands.
 // CommandRouter parses "/command args" style messages and routes them
@@ -32,9 +35,37 @@ router
     await ctx.sendTextReply("pong 🏓");
   })
   .default(async (ctx) => {
-    await ctx.sendTextReply(
-      "👋 I'm Zenith. I didn't recognize that — try /help to see what I can do.",
-    );
+    const text = ctx.isText() ? ctx.message.content : "";
+
+    if (!text.trim()) {
+      await ctx.sendTextReply(
+        "👋 I'm Zenith. Try /help to see my commands, or just say something!",
+      );
+      return;
+    }
+
+    try {
+      const response = await anthropic.messages.create({
+        model: "claude-sonnet-5",
+        max_tokens: 300,
+        system:
+          "You are Zenith, a friendly, upbeat chat agent living on the XMTP decentralized messaging network. Keep replies short (1-3 sentences), warm, and conversational — this is a chat interface, not an essay. You can mention you're an XMTP agent if relevant, but don't force it into every reply.",
+        messages: [{ role: "user", content: text }],
+      });
+
+      const reply = response.content
+        .filter((block) => block.type === "text")
+        .map((block) => block.text)
+        .join("\n")
+        .trim();
+
+      await ctx.sendTextReply(reply || "Hmm, I'm not sure what to say to that!");
+    } catch (error) {
+      console.error("Claude API error:", error);
+      await ctx.sendTextReply(
+        "👋 I'm Zenith. Try /help to see my commands, or just say something!",
+      );
+    }
   });
 
 async function main() {

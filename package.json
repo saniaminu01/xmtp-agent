@@ -9,10 +9,17 @@
     "start": "tsx src/agent.ts",
     "gen:keys": "tsx scripts/gen-keys.ts"
   },
-  "keywords": ["xmtp", "agent", "chatbot", "web3", "messaging"],
+  "keywords": [
+    "xmtp",
+    "agent",
+    "chatbot",
+    "web3",
+    "messaging"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.116.0",
     "@xmtp/agent-sdk": "^2.3.0"
   },
   "devDependencies": {
